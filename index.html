@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Around The Globe - A Travel Memory Book</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+     crossorigin=""/>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css" />
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="particles-container"></div>
+    <div id="weather-animation"></div>
+    <div id="preloader">
+        <div class="pulsating-marker"></div>
+        <div class="loading-text">Pinpointing Adventures...</div>
+    </div>
+    <header>
+        <h1>Around The Globe</h1>
+        <p>My Travel Memory Book</p>
+    </header>
+
+    <div id="map"></div>
+
+    <div class="container">
+        <section id="memories">
+            <h2 class="section-title">My Travel Memories <i class="fas fa-chevron-down"></i></h2>
+            <div class="search-container">
+                <input type="text" id="memories-search" placeholder="Search memories by name...">
+            </div>
+            <div class="card-container" id="memories-container"></div>
+        </section>
+        <section id="wishlist">
+            <h2 class="section-title">My Travel Wishlist <i class="fas fa-chevron-down"></i></h2>
+            <div class="search-container">
+                <input type="text" id="wishlist-search" placeholder="Search wishlist by name...">
+            </div>
+            <div class="card-container" id="wishlist-container"></div>
+        </section>
+        <section id="people">
+            <h2 class="section-title">Friends & Relations <i class="fas fa-chevron-down"></i></h2>
+            <div class="search-container">
+                <input type="text" id="people-search" placeholder="Search people by name...">
+            </div>
+            <div class="card-container" id="people-container"></div>
+        </section>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+     crossorigin=""></script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="script.js"></script>
+
+    <!-- Help Button -->
+    <div id="help-button">?</div>
+
+    <!-- Help Modal -->
+    <div id="help-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>How to Use This Site</h2>
+            <p><strong>Expand/Collapse Sections:</strong> Click on the section titles (e.g., "My Travel Memories") to show or hide the cards.</p>
+            <p><strong>Search:</strong> Use the search bar within each section to filter cards by name.</p>
+            <p><strong>Interactive Map:</strong> Click on any card in any section to automatically zoom to that location on the map.</p>
+            <p><strong>Map Markers:</strong></p>
+            <ul>
+                <li><i class="fas fa-map-marker-alt" style="color: #03f;"></i> &nbsp;<strong>Blue Markers:</strong> Your travel memories.</li>
+                <li><i class="fas fa-star" style="color: gold;"></i> &nbsp;<strong>Gold Markers:</strong> Your travel wishlist.</li>
+                <li><i class="fas fa-user-friends" style="color: dodgerblue;"></i> &nbsp;<strong>Colored Icons:</strong> Your friends and family.</li>
+                <li><strong>Numbered Circles:</strong> These are clusters of markers. Click them to zoom in and see individual locations.</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

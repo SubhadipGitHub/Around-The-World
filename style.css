@@ -1,0 +1,519 @@
+/* filepath: d:\automations\around-the-globe\style.css */
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    color: #333;
+    /* The background properties will be moved to the new themes */
+}
+
+/* Remove the old keyframes */
+/* @keyframes bg-pan { ... } */
+
+#weather-animation {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    transition: background 1s ease-in-out;
+}
+
+/* Day Theme: Bright Sky with a Sun */
+.day-theme #weather-animation {
+    background: linear-gradient(to bottom, #87CEEB, #f0f8ff);
+}
+
+.day-theme #weather-animation::after {
+    content: '';
+    position: absolute;
+    top: 10%;
+    left: -50px;
+    width: 100px;
+    height: 100px;
+    background: #FFD700;
+    border-radius: 50%;
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.7);
+    animation: sun-move 30s linear infinite;
+}
+
+@keyframes sun-move {
+    0% {
+        transform: translateX(0) translateY(0) scale(1);
+    }
+    50% {
+        transform: translateX(calc(100vw + 50px)) translateY(100px) scale(1.2);
+    }
+    100% {
+        transform: translateX(0) translateY(0) scale(1);
+    }
+}
+
+@keyframes twinkle {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.2; }
+}
+
+/* Particle Effect */
+#particles-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+}
+
+.particle {
+    position: absolute;
+    border-radius: 50%;
+    animation: float-up 20s infinite linear;
+    bottom: -20px; /* Start below the screen */
+}
+
+@keyframes float-up {
+    from {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateY(-100vh);
+        opacity: 0;
+    }
+}
+
+/* Day theme particles */
+.day-theme .particle {
+    background: rgba(255, 215, 0, 0.3);
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+/* Night theme particles */
+.night-theme .particle {
+    background: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+}
+
+/* Night Theme: Dark Sky with Twinkling Stars */
+.night-theme #weather-animation {
+    background: linear-gradient(to bottom, #000033, #1a1a4a);
+}
+
+.night-theme #weather-animation::before,
+.night-theme #weather-animation::after {
+    content: '';
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: white;
+    border-radius: 50%;
+    animation: twinkle 5s infinite;
+}
+
+.night-theme #weather-animation::before {
+    box-shadow: 10vw 20vh 0 0 white, 80vw 10vh 0 0 white, 50vw 50vh 0 0 white, 20vw 90vh 0 0 white, 90vw 70vh 0 0 white;
+}
+
+.night-theme #weather-animation::after {
+    box-shadow: 5vw 80vh 0 0 white, 95vw 30vh 0 0 white, 30vw 40vh 0 0 white, 70vw 60vh 0 0 white, 40vw 5vh 0 0 white;
+    animation-delay: 2.5s;
+}
+
+@keyframes twinkle {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.2; }
+}
+
+
+@keyframes bg-pan {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+header {
+    color: white;
+    text-align: center;
+    padding: 1rem 0;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+header h1 {
+    font-family: 'Pacifico', cursive;
+    margin: 0;
+    font-size: 3rem;
+    animation: fadeInDown 1s;
+}
+
+header p {
+    margin: 0;
+    font-size: 1.2rem;
+    animation: fadeInUp 1s;
+    font-weight: 700;
+}
+
+#map {
+    height: 600px;
+    width: 80%;
+    margin: 20px auto; 
+    animation: zoomIn 1s;
+    border: 2px solid rgba(51, 51, 51, 0.8);
+    border-radius: 10px;
+}
+
+.container {
+    margin: 20px;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+}
+
+/* Search Bar Styling */
+.search-container {
+    margin: 10px 0 20px;
+}
+
+.search-container input {
+    width: 100%;
+    padding: 12px 20px;
+    border: 1px solid #ddd;
+    border-radius: 25px;
+    font-size: 1rem;
+    box-sizing: border-box;
+    outline: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    font-family: 'Roboto', sans-serif;
+}
+
+.search-container input:focus {
+    border-color: #4a90e2;
+    box-shadow: 0 0 5px rgba(74, 144, 226, 0.5);
+}
+
+section {
+    margin-bottom: 30px;
+}
+
+h2 {
+    border-bottom: 2px solid #333;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+    font-family: 'Pacifico', cursive;
+}
+
+.section-title {
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.section-title i {
+    transition: transform 0.3s;
+}
+
+.card-container {
+    display: grid;
+    /* New properties for horizontal scrolling grid */
+    grid-auto-flow: column;
+    grid-auto-columns: 260px; /* Width of each card column */
+    grid-template-rows: repeat(2, auto); /* Create 2 rows */
+    overflow-x: auto; /* Enable horizontal scrolling */
+    overflow-y: hidden; /* Hide vertical scrollbar */
+    gap: 20px;
+    padding: 20px 10px; /* Add some padding for aesthetics and scrollbar */
+    height: 650px; /* Set a fixed height for 2 rows of cards */
+    transition: max-height 0.7s ease-in-out;
+    scrollbar-width: thin; /* For Firefox */
+    scrollbar-color: #4a90e2 #e0e0e0; /* For Firefox */
+}
+
+/* Style the scrollbar for Webkit browsers (Chrome, Safari) */
+.card-container::-webkit-scrollbar {
+    height: 8px;
+}
+
+.card-container::-webkit-scrollbar-track {
+    background: #e0e0e0;
+    border-radius: 4px;
+}
+
+.card-container::-webkit-scrollbar-thumb {
+    background-color: #4a90e2;
+    border-radius: 4px;
+}
+
+.card-container.collapsed {
+    max-height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    overflow: hidden;
+}
+
+.card {
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    animation: popIn 0.5s ease-out;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    z-index: 10; /* Lift the card above others on hover */
+}
+
+.card h3 {
+    margin-top: 0;
+}
+
+.card img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 5px 5px 0 0;
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes zoomIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes popIn {
+    from {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+#preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #1a1a4a; /* A dark background matching the night theme */
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-family: 'Pacifico', cursive;
+}
+
+.pulsating-marker {
+    width: 30px;
+    height: 30px;
+    background-color: #4a90e2;
+    border-radius: 50%;
+    position: relative;
+    box-shadow: 0 0 0 0 rgba(74, 144, 226, 0.7);
+    animation: pulse 1.5s infinite;
+}
+
+.loading-text {
+    margin-top: 20px;
+    font-size: 1.5rem;
+    letter-spacing: 2px;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(74, 144, 226, 0.7);
+    }
+    70% {
+        transform: scale(1);
+        box-shadow: 0 0 0 20px rgba(74, 144, 226, 0);
+    }
+    100% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(74, 144, 226, 0);
+    }
+}
+
+.plane-container {
+    width: 200px;
+    height: 200px;
+    position: relative;
+    animation: fly 4s ease-in-out infinite;
+}
+
+.plane {
+    width: 0;
+    height: 0;
+    border-left: 50px solid transparent;
+    border-right: 50px solid transparent;
+    border-bottom: 100px solid white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.loading-text {
+    color: white;
+    font-size: 1.5rem;
+    margin-top: 20px;
+    animation: blink 1.5s infinite;
+}
+
+@keyframes fly {
+    0% {
+        transform: translateY(0) rotate(0deg);
+    }
+    50% {
+        transform: translateY(-50px) rotate(5deg);
+    }
+    100% {
+        transform: translateY(0) rotate(0deg);
+    }
+}
+
+.person-marker {
+    font-size: 16px;
+    text-align: center;
+    line-height: 24px;
+    background-color: white;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.5);
+    border: 2px solid;
+}
+
+@keyframes blink {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+/* Help Section Styles */
+#help-button {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    width: 50px;
+    height: 50px;
+    background-color: #4a90e2;
+    color: white;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 50px;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    z-index: 1000;
+    transition: transform 0.2s ease;
+}
+
+#help-button:hover {
+    transform: scale(1.1);
+}
+
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 1001;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.6); /* Dark overlay */
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 25px;
+    border: 1px solid #888;
+    width: 90%;
+    max-width: 600px;
+    border-radius: 10px;
+    position: relative;
+    animation: slideIn 0.4s ease-out;
+}
+
+@keyframes slideIn {
+    from { transform: translateY(-50px); opacity: 0 }
+    to { transform: translateY(0); opacity: 1 }
+}
+
+.close-button {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    line-height: 1;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal-content h2 {
+    margin-top: 0;
+}
+
+.modal-content ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.modal-content li {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+}
