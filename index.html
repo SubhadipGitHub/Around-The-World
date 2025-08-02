@@ -178,14 +178,19 @@
     vertical-align: middle;
 }
 /* Decorative horizontal GIF for <hr> */
+/* Decorative horizontal GIF for <hr> */
 #decor-hr {
     border: none;
     height: 104px;
     background: url('https://i.pinimg.com/originals/01/2e/95/012e95baadc894f8dbf4fc1e5be40519.gif') repeat-x center;
     background-size: auto 104px;
     position: relative;
-    width: 110%;
-    margin-bottom: 0;
+    width: 100vw;
+    min-width: 100vw;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0;
+    z-index: 3;
 }
 /* Walking GIF animation styles */
 #walk-anim-container {
@@ -217,12 +222,11 @@ body { position: relative; }
     position: absolute;
     left: 0;
     width: 100vw;
-    min-height: 100%;
+    min-width: 100vw;
     background: url('https://static.vecteezy.com/system/resources/previews/059/209/500/non_2x/seamless-cartoon-game-ground-texture-forming-a-repeating-pattern-representing-a-stylized-surface-with-cracks-rocks-and-dirt-suitable-for-game-level-design-or-background-vector.jpg') repeat bottom;
     background-size: auto 180px; /* tile horizontally, control vertical size */
     z-index: -1;
     pointer-events: none;
-    margin-top: 10px;
     height: 0; /* will be set by JS */
 }
 #decor-hr {
@@ -294,13 +298,111 @@ body { position: relative; }
 #music-toggle:hover {
   background: #357abd;
 }
+/* Responsive styles for map view and activity timeline */
+@media (max-width: 900px) {
+  html, body {
+    overflow-x: hidden !important;
+  }
+  #decor-hr {
+    width: 100vw;
+    min-width: 100vw;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  #ground-bg {
+    width: 100vw;
+    min-width: 100vw;
+  }
+  #map-view-container, #timeline-view-container {
+    flex-direction: column !important;
+    padding: 0 !important;
+    width: 100vw !important;
+    box-sizing: border-box;
+  }
+  #map-view-container .container, #timeline-view-container .container {
+    width: 100vw !important;
+    max-width: 100vw !important;
+    padding: 0 4vw !important;
+    box-sizing: border-box;
+  }
+  #map {
+    width: 100vw !important;
+    min-width: 0 !important;
+    max-width: 100vw !important;
+    height: 320px !important;
+    margin-bottom: 16px;
+    border-radius: 0 !important;
+    box-sizing: border-box;
+    display: block;
+  }
+  #timeline-content {
+    padding: 0 2vw !important;
+  }
+  .timeline-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .section-title {
+    font-size: 1.2rem !important;
+  }
+}
+
+@media (max-width: 600px) {
+  html, body {
+    overflow-x: hidden !important;
+  }
+  #decor-hr {
+    width: 100vw;
+    min-width: 100vw;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  #ground-bg {
+    width: 100vw;
+    min-width: 100vw;
+  }
+  #map-view-container, #timeline-view-container {
+    padding: 0 !important;
+    width: 100vw !important;
+    box-sizing: border-box;
+  }
+  #map {
+    width: 100vw !important;
+    max-width: 100vw !important;
+    height: 220px !important;
+    border-radius: 0 !important;
+    box-sizing: border-box;
+    display: block;
+  }
+  .section-title {
+    font-size: 1rem !important;
+  }
+  #map-view-container .container, #timeline-view-container .container {
+    width: 100vw !important;
+    max-width: 100vw !important;
+    padding: 0 2vw !important;
+    box-sizing: border-box;
+  }
+}
 </style>
 <script>
 // Dynamically set the top of #walk-anim-container and #ground-bg to match the <hr>
-document.addEventListener('DOMContentLoaded', function() {
+
+function positionDecorHrAndGroundBg() {
   var hr = document.getElementById('decor-hr');
   var walkAnim = document.getElementById('walk-anim-container');
   var groundBg = document.getElementById('ground-bg');
+  // Responsive walking animation speed
+  if (walkAnim) {
+    if (window.innerWidth <= 600) {
+      walkAnim.style.animationDuration = '10s'; // fast on small screens
+    } else if (window.innerWidth <= 900) {
+      walkAnim.style.animationDuration = '18s'; // medium on tablets
+    } else {
+      walkAnim.style.animationDuration = '28s'; // slow on desktop
+    }
+  }
   if (hr && walkAnim) {
     var rect = hr.getBoundingClientRect();
     var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
@@ -311,8 +413,38 @@ document.addEventListener('DOMContentLoaded', function() {
     var rect = hr.getBoundingClientRect();
     var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
     var top = rect.bottom + scrollTop;
-    groundBg.style.top = (top - 10) + 'px';
-    groundBg.style.height = (window.innerHeight + scrollTop - top) + 'px';
+    groundBg.style.top = top + 'px';
+
+    // Find the bottom of the main content (map-view-container and timeline-view-container)
+    var mapView = document.getElementById('map-view-container');
+    var timelineView = document.getElementById('timeline-view-container');
+    var mapBottom = 0, timelineBottom = 0;
+    if (mapView && mapView.offsetParent !== null) {
+      var mapRect = mapView.getBoundingClientRect();
+      mapBottom = mapRect.bottom + scrollTop;
+    }
+    if (timelineView && timelineView.offsetParent !== null) {
+      var timelineRect = timelineView.getBoundingClientRect();
+      timelineBottom = timelineRect.bottom + scrollTop;
+    }
+    var contentBottom = Math.max(mapBottom, timelineBottom);
+    // Fallback to document height if contentBottom is not found
+    if (!contentBottom || contentBottom < top) {
+      contentBottom = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight, window.innerHeight);
+    }
+    groundBg.style.height = (contentBottom - top) + 'px';
+  }
+}
+
+window.addEventListener('DOMContentLoaded', positionDecorHrAndGroundBg);
+window.addEventListener('resize', positionDecorHrAndGroundBg);
+window.addEventListener('scroll', positionDecorHrAndGroundBg);
+
+// Fix walk-anim alignment on animation iteration
+document.addEventListener('DOMContentLoaded', function() {
+  var walkAnim = document.getElementById('walk-anim-container');
+  if (walkAnim) {
+    walkAnim.addEventListener('animationiteration', positionDecorHrAndGroundBg);
   }
 });
 </script>
@@ -328,8 +460,9 @@ document.addEventListener('DOMContentLoaded', function() {
   <i class="fas fa-music"></i>
 </button>
 <script>
-// Music toggle
+// Music toggle and animated travel quotes
 document.addEventListener('DOMContentLoaded', function() {
+  // Music toggle
   const music = document.getElementById('travel-music');
   const btn = document.getElementById('music-toggle');
   let playing = false;
@@ -344,6 +477,32 @@ document.addEventListener('DOMContentLoaded', function() {
       playing = false;
     }
   });
+
+  // Animated travel quotes
+  const travelQuotes = [
+    "All my friends are having one or two babies, and I’m like: “What destination am I going to next?”",
+    "Travel is the only thing you buy that makes you richer.",
+    "To travel is to live.",
+    "Jobs fill your pocket, adventures fill your soul.",
+    "The world is a book and those who do not travel read only one page.",
+    "Not all those who wander are lost.",
+    "Take only memories, leave only footprints.",
+    "Life is short and the world is wide.",
+    "Wander often, wonder always.",
+    "Adventure may hurt you, but monotony will kill you."
+  ];
+  const quoteText = document.getElementById('animated-quote-text');
+  let lastIndex = -1;
+  function showRandomQuote() {
+    let idx;
+    do {
+      idx = Math.floor(Math.random() * travelQuotes.length);
+    } while (idx === lastIndex && travelQuotes.length > 1);
+    lastIndex = idx;
+    quoteText.textContent = travelQuotes[idx];
+  }
+  setInterval(showRandomQuote, 20000);
+  showRandomQuote();
 });
 </script>
 </body>
