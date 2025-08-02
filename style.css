@@ -1,3 +1,47 @@
+/* Hide scrollbar in people-container */
+#people-container {
+    scrollbar-width: none; /* Firefox */
+}
+#people-container::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+
+/* People card base style */
+.people-card {
+    background: rgba(255,255,255,0.78); /* semi-transparent white */
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+    padding: 1rem;
+    margin: 10px;
+    transition: background 0.3s, box-shadow 0.3s, transform 0.3s;
+    position: relative;
+    cursor: pointer;
+    z-index: 1;
+}
+.people-card.highlighted {
+    box-shadow: 0 8px 24px rgba(74,144,226,0.18), 0 2px 8px rgba(0,0,0,0.10);
+    transform: scale(1.04);
+    z-index: 2;
+}
+.people-card.highlighted.girlfriend {
+    background-image: url('https://i.pinimg.com/originals/f9/44/21/f944219ccacef9494025f491f93c06ce.gif');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.people-card.highlighted.friend {
+    background-image: url('https://cdn.dribbble.com/userupload/22138070/file/original-a0ff5c1d2dbc57004836d3e24214b887.gif');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.people-card.highlighted.family,
+.people-card.highlighted.relation {
+    background-image: url('https://i.pinimg.com/originals/2b/54/2f/2b542fb210eed84b23386a473c70b253.gif');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
 /* filepath: d:\automations\around-the-globe\style.css */
 /* Font Sizes */
 :root {
@@ -599,6 +643,64 @@ to {
     border-radius: 10px;
     position: relative;
     animation: slideIn 0.4s ease-out;
+}
+
+.memory-modal-content {
+    max-width: 480px;
+    background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+    box-shadow: 0 8px 32px 0 rgba(74,144,226,0.18);
+    border-radius: 18px;
+    padding: 32px 24px 24px 24px;
+    text-align: center;
+    position: relative;
+}
+.memory-modal-content img {
+    width: 100%;
+    max-height: 220px;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-bottom: 18px;
+    box-shadow: 0 2px 12px 0 rgba(74,144,226,0.10);
+}
+.memory-modal-content h2 {
+    font-family: 'Pacifico', cursive;
+    font-size: 2rem;
+    color: #2d3a4a;
+    margin: 0 0 12px 0;
+}
+.memory-modal-content p {
+    color: #333;
+    font-size: 1.1rem;
+    margin-bottom: 18px;
+    white-space: pre-line;
+}
+.memory-modal-content a {
+    display: inline-block;
+    background: #4a90e2;
+    color: #fff;
+    padding: 10px 22px;
+    border-radius: 22px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1rem;
+    transition: background 0.2s;
+}
+.memory-modal-content a:hover {
+    background: #357abd;
+}
+.close-memory-modal {
+    position: absolute;
+    top: 12px;
+    right: 18px;
+    font-size: 2rem;
+    color: #4a90e2;
+    cursor: pointer;
+    font-weight: bold;
+    z-index: 2;
+    transition: color 0.2s;
+}
+.close-memory-modal:hover {
+    color: #357abd;
 }
 
 @keyframes slideIn {

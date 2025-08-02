@@ -213,13 +213,74 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 0);
 
         card.addEventListener('click', (e) => {
-            // Only zoom if the click was not on the itinerary or show-more button
+            // Only open modal if not clicking itinerary or show-more button
             if (!e.target.classList.contains('itinerary-btn') && !e.target.classList.contains('show-more-btn')) {
-                map.setView(place.coords, 10);
+                openMemoryModal(place);
             }
         });
         return card;
     }
+
+    // Modal logic for memory cards
+    function openMemoryModal(place) {
+        const modal = document.getElementById('memory-modal');
+        document.getElementById('memory-modal-img').src = place.image;
+        document.getElementById('memory-modal-title').textContent = place.name;
+        document.getElementById('memory-modal-note').textContent = place.note;
+        const itinerary = document.getElementById('memory-modal-itinerary');
+        if (place.itineraryUrl) {
+            itinerary.href = place.itineraryUrl;
+            itinerary.style.display = '';
+        } else {
+            itinerary.style.display = 'none';
+        }
+        modal.style.display = 'block';
+    }
+
+    // Attach modal close listeners after DOM is ready and modal is present
+    window.addEventListener('DOMContentLoaded', function() {
+        const modal = document.getElementById('memory-modal');
+        const closeBtn = document.querySelector('.close-memory-modal');
+        if (closeBtn) {
+            closeBtn.onclick = function() {
+                modal.style.display = 'none';
+            };
+        }
+        window.addEventListener('click', function(event) {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+    });
+
+    // Modal logic for memory cards
+    function openMemoryModal(place) {
+        const modal = document.getElementById('memory-modal');
+        document.getElementById('memory-modal-img').src = place.image;
+        document.getElementById('memory-modal-title').textContent = place.name;
+        document.getElementById('memory-modal-note').textContent = place.note;
+        const itinerary = document.getElementById('memory-modal-itinerary');
+        if (place.itineraryUrl) {
+            itinerary.href = place.itineraryUrl;
+            itinerary.style.display = '';
+        } else {
+            itinerary.style.display = 'none';
+        }
+        modal.style.display = 'block';
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const modal = document.getElementById('memory-modal');
+        const closeBtn = document.querySelector('.close-memory-modal');
+        closeBtn.onclick = function() {
+            modal.style.display = 'none';
+        };
+        window.addEventListener('click', function(event) {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+    });
 
     function createPersonCard(person) {
         const card = document.createElement('div');
@@ -232,14 +293,22 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function createPersonCard(person) {
+        // Determine the class for the card based on category
+        let typeClass = '';
+        if (person.category === 'girlfriend') typeClass = 'girlfriend';
+        else if (person.category === 'friend') typeClass = 'friend';
+        else if (person.category === 'parents' || person.category === 'family') typeClass = 'family';
+        else if (person.category === 'relation') typeClass = 'relation';
+
         const card = document.createElement('div');
-        card.className = 'card';
-        
+        card.className = `card people-card${typeClass ? ' ' + typeClass : ''}`;
+
         const categoryEmojis = {
             parents: '👨‍👩‍👧‍👦',
             girlfriend: '💕',
             friend: '🤗',
-            relation: '👥'
+            relation: '👥',
+            family: '👨‍👩‍👧‍👦'
         };
         const emoji = categoryEmojis[person.category] || '👤';
 
