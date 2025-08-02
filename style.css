@@ -1,8 +1,20 @@
 /* filepath: d:\automations\around-the-globe\style.css */
+/* Font Sizes */
+:root {
+    --font-size-header: 3rem;
+    --font-size-subheader: 1.2rem;
+    --font-size-section-title: 1.5rem;
+    --font-size-card-title: 1.2rem;
+    --font-size-card-content: 1rem;
+    --font-size-button: 1rem;
+    --font-size-input: 1rem;
+}
+
 body {
     font-family: 'Roboto', sans-serif;
     margin: 0;
     color: #333;
+    font-size: var(--font-size-card-content);
     /* The background properties will be moved to the new themes */
 }
 
@@ -148,13 +160,13 @@ header {
 header h1 {
     font-family: 'Pacifico', cursive;
     margin: 0;
-    font-size: 3rem;
+    font-size: var(--font-size-header);
     animation: fadeInDown 1s;
 }
 
 header p {
     margin: 0;
-    font-size: 1.2rem;
+    font-size: var(--font-size-subheader);
     animation: fadeInUp 1s;
     font-weight: 700;
 }
@@ -171,7 +183,6 @@ header p {
 .container {
     margin: 20px;
     padding: 20px;
-    background-color: rgba(255, 255, 255, 0.8);
     border-radius: 10px;
     box-shadow: 0 0 20px rgba(0,0,0,0.1);
 }
@@ -181,12 +192,32 @@ header p {
     margin: 10px 0 20px;
 }
 
+.search-container input[type="text"] {
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    padding: 12px 15px;
+    transition: all 0.3s ease;
+}
+
+.search-container input[type="text"]::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.search-container input[type="text"]:focus {
+    background-color: rgba(0, 0, 0, 0.5);
+    border-color: #4d90fe;
+    outline: none;
+    box-shadow: 0 0 8px rgba(77, 144, 254, 0.5);
+}
+
 .search-container input {
     width: 100%;
     padding: 12px 20px;
     border: 1px solid #ddd;
     border-radius: 25px;
-    font-size: 1rem;
+    font-size: var(--font-size-input);
     box-sizing: border-box;
     outline: none;
     transition: border-color 0.3s, box-shadow 0.3s;
@@ -209,15 +240,42 @@ h2 {
     font-family: 'Pacifico', cursive;
 }
 
+.container section {
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px); /* For Safari */
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 25px; /* Add some space between sections */
+    padding: 10px;
+}
+
+.container section:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.45);
+}
+
 .section-title {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 700;
+    font-size: var(--font-size-section-title);
+    color: #ffffff;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    margin-bottom: 20px;
     cursor: pointer;
     display: flex;
-    justify-content: space-between;
     align-items: center;
 }
 
-.section-title i {
+.section-title i.fa-chevron-down {
+    margin-left: auto;
     transition: transform 0.3s;
+}
+
+.section-title i:not(.fa-chevron-down) {
+    margin-right: 10px;
 }
 
 .card-container {
@@ -636,10 +694,14 @@ to {
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     transition: background-color 0.3s;
+    background-repeat: no-repeat;
+    background-position: right 20px center;
+    background-size: 100px;
+    padding-right: 90px; /* Make space for the gif */
 }
 
-.timeline-item.highlighted {
-    background-color: #eaf4ff;
+.timeline-item.highlighted {    
+    background-image: url('https://cliply.co/wp-content/uploads/2019/08/371908390_CALENDAR_400px.gif');
     border-left: 4px solid #0056b3;
     transform: scale(1.02);
 }
