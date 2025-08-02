@@ -191,13 +191,30 @@ document.addEventListener('DOMContentLoaded', () => {
             <img src="${place.image}" alt="${place.name}">
             <div class="card-content">
                 <h3>${place.name}</h3>
-                <p>${place.note}</p>
+                <p class="note-text">${place.note}</p>
                 ${place.itineraryUrl ? `<a href="${place.itineraryUrl}" target="_blank" class="itinerary-btn">View Itinerary</a>` : ''}
             </div>`;
-        
+
+        // Add Show more button if note is long
+        setTimeout(() => {
+            const content = card.querySelector('.card-content');
+            const note = content.querySelector('.note-text');
+            if (note.scrollHeight > 90) {
+                const btn = document.createElement('button');
+                btn.className = 'show-more-btn';
+                btn.textContent = 'Show more';
+                btn.onclick = (e) => {
+                    e.stopPropagation();
+                    const expanded = content.classList.toggle('expanded');
+                    btn.textContent = expanded ? 'Show less' : 'Show more';
+                };
+                content.appendChild(btn);
+            }
+        }, 0);
+
         card.addEventListener('click', (e) => {
-            // Only zoom if the click was not on the itinerary button
-            if (!e.target.classList.contains('itinerary-btn')) {
+            // Only zoom if the click was not on the itinerary or show-more button
+            if (!e.target.classList.contains('itinerary-btn') && !e.target.classList.contains('show-more-btn')) {
                 map.setView(place.coords, 10);
             }
         });
