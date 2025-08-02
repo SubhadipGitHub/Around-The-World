@@ -35,6 +35,8 @@
         <i class="fas fa-quote-right"></i>
     </div>
     <hr id="decor-hr">
+    <!-- Ground background below decor-hr -->
+    <div id="ground-bg"></div>
     <!-- Navigation Tabs -->
     <div class="nav-tabs">
         <button id="map-tab" class="nav-tab active">Map View</button>
@@ -209,17 +211,43 @@
 body { position: relative; }
 
 /* Dynamically set the top of #walk-anim-container to match the <hr> */
+/* Ground background below decor-hr */
+#ground-bg {
+    position: absolute;
+    left: 0;
+    width: 100vw;
+    min-height: 100%;
+    background: url('https://static.vecteezy.com/system/resources/previews/059/209/500/non_2x/seamless-cartoon-game-ground-texture-forming-a-repeating-pattern-representing-a-stylized-surface-with-cracks-rocks-and-dirt-suitable-for-game-level-design-or-background-vector.jpg') repeat bottom;
+    background-size: auto 180px; /* tile horizontally, control vertical size */
+    z-index: -1;
+    pointer-events: none;
+    margin-top: 20px;
+    height: 0; /* will be set by JS */
+}
+#decor-hr {
+    z-index: 3;
+    position: relative;
+    width: 100%;
+}
 </style>
 <script>
-// Dynamically set the top of #walk-anim-container to match the <hr>
+// Dynamically set the top of #walk-anim-container and #ground-bg to match the <hr>
 document.addEventListener('DOMContentLoaded', function() {
   var hr = document.getElementById('decor-hr');
   var walkAnim = document.getElementById('walk-anim-container');
+  var groundBg = document.getElementById('ground-bg');
   if (hr && walkAnim) {
     var rect = hr.getBoundingClientRect();
     var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
     // Move the walker up so it appears above the grass
-    walkAnim.style.top = (rect.top + scrollTop - 65) + 'px';
+    walkAnim.style.top = (rect.top + scrollTop - 45) + 'px';
+  }
+  if (hr && groundBg) {
+    var rect = hr.getBoundingClientRect();
+    var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    var top = rect.bottom + scrollTop;
+    groundBg.style.top = top + 'px';
+    groundBg.style.height = (window.innerHeight + scrollTop - top + 20) + 'px';
   }
 });
 </script>
