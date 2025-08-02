@@ -6,6 +6,28 @@
     display: none; /* Chrome, Safari, Opera */
 }
 
+/* Responsive sticky footer */
+#site-footer {
+  width: 100vw;
+  min-width: 100vw;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.95);
+  color: #fff;
+  text-align: center;
+  font-size: 1rem;
+  padding: 18px 0 14px 0;
+  position: relative;
+  z-index: 10;
+  box-shadow: 0 -2px 12px 0 rgba(74,144,226,0.08);
+}
+@media (max-width: 600px) {
+  #site-footer {
+    font-size: 0.95rem;
+    padding: 14px 0 10px 0;
+  }
+}
+
 /* People card base style */
 .people-card {
     background: rgba(255,255,255,0.78); /* semi-transparent white */
@@ -225,7 +247,6 @@ header p {
 }
 
 .container {
-    margin: 20px;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 20px rgba(0,0,0,0.1);
