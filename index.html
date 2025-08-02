@@ -19,12 +19,25 @@
     <div id="preloader">
         <div class="pulsating-marker"></div>
         <div class="loading-text">Pinpointing Adventures...</div>
-    </div>
+</div>
+
+<!-- Walking GIF Animation (above the <hr>) -->
+<div id="walk-anim-container">
+    <img src="images/walk-anim.gif" alt="Walking animation" id="walk-anim-gif">
+</div>
     <header>
         <h1>Around The Globe</h1>
         <p>My Travel Memory Book</p>
     </header>
-
+    <!-- Animated Travel Quote -->
+    <div class="travel-quote-animated">
+      <i class="fas fa-quote-left"></i>
+      <span id="animated-quote-text">All my friends are having one or two babies, and I’m like: “What destination am I going to next?"</span>
+      <i class="fas fa-quote-right"></i>
+    </div>
+    <hr id="decor-hr">
+    <!-- Ground background below decor-hr -->
+    <div id="ground-bg"></div>
     <!-- Navigation Tabs -->
     <div class="nav-tabs">
         <button id="map-tab" class="nav-tab active">Map View</button>
@@ -63,7 +76,7 @@
 
     <div id="timeline-view-container" style="display: none;">
         <div class="timeline-header">
-            <h2>My Travel Timeline</h2>
+            <h2><i class="fas fa-route"></i> My Travel Timeline</h2>
             <button id="play-timeline-animation">▶️ Replay</button>
         </div>
         <div id="timeline-content">
@@ -72,12 +85,55 @@
         </div>
     </div>
 
+
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
      crossorigin=""></script>
     <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="script.js"></script>
+    <script>
+    // Highlight effect for people cards
+    document.addEventListener('DOMContentLoaded', function() {
+        const peopleContainer = document.getElementById('people-container');
+        if (!peopleContainer) return;
+        // Use event delegation for dynamic cards
+        peopleContainer.addEventListener('mouseover', function(e) {
+            const card = e.target.closest('.people-card');
+            if (card) {
+                card.classList.add('highlighted');
+            }
+        });
+        peopleContainer.addEventListener('mouseout', function(e) {
+            const card = e.target.closest('.people-card');
+            if (card) {
+                card.classList.remove('highlighted');
+            }
+        });
+        // Optional: click to keep highlighted until another is clicked
+        peopleContainer.addEventListener('click', function(e) {
+            const card = e.target.closest('.people-card');
+            if (!card) return;
+            // Remove highlight from all
+            peopleContainer.querySelectorAll('.people-card.highlighted').forEach(c => {
+                if (c !== card) c.classList.remove('highlighted');
+            });
+            // Toggle highlight on clicked card
+            card.classList.toggle('highlighted');
+        });
+    });
+    </script>
+
+    <!-- Memory Modal -->
+    <div id="memory-modal" class="modal">
+        <div class="modal-content memory-modal-content">
+            <span class="close-memory-modal">&times;</span>
+            <img id="memory-modal-img" src="" alt="Memory Image">
+            <h2 id="memory-modal-title"></h2>
+            <p id="memory-modal-note"></p>
+            <a id="memory-modal-itinerary" href="#" target="_blank" style="display:none;">View Itinerary</a>
+        </div>
+    </div>
 
     <!-- Help Button -->
     <div id="help-button">?</div>
@@ -101,5 +157,194 @@
             </ul>
         </div>
     </div>
+<style>
+.travel-quote {
+    text-align: center;
+    font-family: 'Pacifico', cursive;
+    font-size: 1.5rem;
+    color: #388e3c;
+    margin: 24px 0 0 0;
+    padding: 0 16px;
+    line-height: 1.4;
+    letter-spacing: 0.5px;
+    text-shadow: 0 2px 8px rgba(56,142,60,0.08);
+    position: relative;
+    z-index: 10;
+}
+.travel-quote i {
+    color: #4a90e2;
+    margin: 0 8px;
+    font-size: 1.2em;
+    vertical-align: middle;
+}
+/* Decorative horizontal GIF for <hr> */
+#decor-hr {
+    border: none;
+    height: 104px;
+    background: url('https://i.pinimg.com/originals/01/2e/95/012e95baadc894f8dbf4fc1e5be40519.gif') repeat-x center;
+    background-size: auto 104px;
+    position: relative;
+    width: 110%;
+    margin-bottom: 0;
+}
+/* Walking GIF animation styles */
+#walk-anim-container {
+    position: absolute;
+    left: 0;
+    /* The top will be set dynamically to match the <hr> position */
+    width: 240px;
+    height: 200px;
+    z-index: 1002;
+    pointer-events: none;
+    animation: walk-move 28s linear infinite;
+}
+#walk-anim-gif {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+@keyframes walk-move {
+    0% { left: -120px; }
+    100% { left: 100vw; }
+}
+
+/* Position the walking animation to walk on the <hr> */
+body { position: relative; }
+
+/* Dynamically set the top of #walk-anim-container to match the <hr> */
+/* Ground background below decor-hr */
+#ground-bg {
+    position: absolute;
+    left: 0;
+    width: 100vw;
+    min-height: 100%;
+    background: url('https://static.vecteezy.com/system/resources/previews/059/209/500/non_2x/seamless-cartoon-game-ground-texture-forming-a-repeating-pattern-representing-a-stylized-surface-with-cracks-rocks-and-dirt-suitable-for-game-level-design-or-background-vector.jpg') repeat bottom;
+    background-size: auto 180px; /* tile horizontally, control vertical size */
+    z-index: -1;
+    pointer-events: none;
+    margin-top: 10px;
+    height: 0; /* will be set by JS */
+}
+#decor-hr {
+    z-index: 3;
+    position: relative;
+    width: 100%;
+}
+/* Animated Travel Quote Styles */
+.travel-quote-animated {
+  text-align: center;
+  font-family: 'Pacifico', cursive;
+  font-size: 1.7rem;
+  color: #388e3c;
+  margin: 32px 0 0 0;
+  padding: 0 16px;
+  line-height: 1.4;
+  letter-spacing: 0.5px;
+  text-shadow: 0 2px 8px rgba(56,142,60,0.12);
+  position: relative;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+}
+.travel-quote-animated i {
+  color: #4a90e2;
+  font-size: 1.3em;
+  animation: quote-bounce 2.5s infinite alternate;
+}
+#animated-quote-text {
+  display: inline-block;
+  background: linear-gradient(90deg, #e0eafc 0%, #cfdef3 100%);
+  padding: 10px 24px;
+  border-radius: 32px;
+  box-shadow: 0 4px 24px rgba(74,144,226,0.08);
+  animation: travel-wave 5s infinite alternate;
+}
+@keyframes travel-wave {
+  0% { transform: scale(1) rotate(-1deg);}
+  50% { transform: scale(1.04) rotate(1deg);}
+  100% { transform: scale(1) rotate(-1deg);}
+}
+@keyframes quote-bounce {
+  0% { transform: translateY(0);}
+  100% { transform: translateY(-8px);}
+}
+
+/* Music Toggle Button */
+#music-toggle {
+  position: fixed;
+  bottom: 90px;
+  right: 30px;
+  z-index: 2000;
+  background: #4a90e2;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  font-size: 1.5rem;
+  box-shadow: 0 4px 16px rgba(74,144,226,0.18);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+#music-toggle.active {
+  background: #388e3c;
+}
+#music-toggle:hover {
+  background: #357abd;
+}
+</style>
+<script>
+// Dynamically set the top of #walk-anim-container and #ground-bg to match the <hr>
+document.addEventListener('DOMContentLoaded', function() {
+  var hr = document.getElementById('decor-hr');
+  var walkAnim = document.getElementById('walk-anim-container');
+  var groundBg = document.getElementById('ground-bg');
+  if (hr && walkAnim) {
+    var rect = hr.getBoundingClientRect();
+    var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    // Move the walker up so it appears above the grass
+    walkAnim.style.top = (rect.top + scrollTop - 65) + 'px';
+  }
+  if (hr && groundBg) {
+    var rect = hr.getBoundingClientRect();
+    var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    var top = rect.bottom + scrollTop;
+    groundBg.style.top = (top - 10) + 'px';
+    groundBg.style.height = (window.innerHeight + scrollTop - top) + 'px';
+  }
+});
+</script>
+</style>
+</script>
+
+<!-- Travel Music -->
+<audio id="travel-music" loop>
+  <source src="music/travel_music.mp3" type="audio/mp3">
+  Your browser does not support the audio element.
+</audio>
+<button id="music-toggle" title="Toggle music">
+  <i class="fas fa-music"></i>
+</button>
+<script>
+// Music toggle
+document.addEventListener('DOMContentLoaded', function() {
+  const music = document.getElementById('travel-music');
+  const btn = document.getElementById('music-toggle');
+  let playing = false;
+  btn.addEventListener('click', function() {
+    if (!playing) {
+      music.play();
+      btn.classList.add('active');
+      playing = true;
+    } else {
+      music.pause();
+      btn.classList.remove('active');
+      playing = false;
+    }
+  });
+});
+</script>
 </body>
 </html>

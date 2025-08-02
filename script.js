@@ -61,21 +61,21 @@ document.addEventListener('DOMContentLoaded', () => {
     }).addTo(map);
 
     const memories = [
-        { name: 'Kolkata', date: '2015-05-20', coords: [22.5726, 88.3639], note: 'My grand parents place.', 
-            image: 'https://www.shutterstock.com/image-photo/howrah-bridge-wooden-boats-on-260nw-2486557591.jpg' 
-            , itineraryUrl: 'https://www.google.com/maps/d/u/0/viewer?mid=1Z5b4k2f8g3j7c9e5z5e5e5e5e5e5e5e&ll=22.5726,88.3639&z=10' },
-        { name: 'Asansol', date: '2016-06-15', coords: [23.6889, 86.9659], note: 'Schooling.', 
-            image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/IMG_asnrlyjn.jpg/1200px-IMG_asnrlyjn.jpg' 
-        , itineraryUrl: 'https://www.google.com/maps/d/u/0/viewer?mid=1Z5b4k2f8g3j7c9e5z5e5e5e5e5e5e5e&ll=23.6889,86.9659&z=10' 
+    { name: 'Kolkata', date: '2015-05-20', coords: [22.5726, 88.3639], note: 'My grandparents’ home, where every summer was filled with delicious Bengali sweets, stories from the past, and the vibrant chaos of city life. The Howrah Bridge and the Ganges always bring back a flood of memories.', 
+        image: 'https://www.shutterstock.com/image-photo/howrah-bridge-wooden-boats-on-260nw-2486557591.jpg' 
+        , itineraryUrl: 'https://www.google.com/maps/d/u/0/viewer?mid=1Z5b4k2f8g3j7c9e5z5e5e5e5e5e5e5e&ll=22.5726,88.3639&z=10' },
+    { name: 'Asansol', date: '2016-06-15', coords: [23.6889, 86.9659], note: 'My school days in Asansol were a mix of learning, laughter, and lifelong friendships. Exploring the local markets and playing cricket in the evenings are memories I’ll always cherish.', 
+        image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/IMG_asnrlyjn.jpg/1200px-IMG_asnrlyjn.jpg' 
+    , itineraryUrl: 'https://www.google.com/maps/d/u/0/viewer?mid=1Z5b4k2f8g3j7c9e5z5e5e5e5e5e5e5e&ll=23.6889,86.9659&z=10' 
 },
-        { name: 'Bhubaneswar', date: '2015-05-25', coords: [20.2961, 85.8245], note: 'College.', 
-            image: 'https://media.istockphoto.com/id/178757243/photo/ancient-indian-temple.jpg?s=612x612&w=0&k=20&c=J8JODhj86IndwpeizmfmMQSWQwRHYZ98wrWUIodxbIE=' },
-        { name: 'Burdwan', date: '2017-07-10', coords: [23.2326, 87.8616], note: 'Grandparent.', 
-            image: 'https://www.sinclairshotels.com/assets/images/burdwan/sightseeing/curzon.jpg' },
-        { name: 'Ghaziabad', date: '2018-08-15', coords: [28.6692, 77.4538], note: 'Lived there for some time.', 
-            image: 'https://upload.wikimedia.org/wikipedia/commons/e/e1/Indirapuram.jpg' },
-        { name: 'Bangalore', coords: [12.9716, 77.5946], note: 'Currently staying here.', 
-            image: 'https://images.unsplash.com/photo-1697130383976-38f28c444292?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YmFuZ2Fsb3JlJTIwaW5kaWF8ZW58MHx8MHx8fDA%3D' }
+    { name: 'Bhubaneswar', date: '2015-05-25', coords: [20.2961, 85.8245], note: 'My college years in Bhubaneswar were a time of growth and adventure. From ancient temples to late-night hostel chats, this city taught me independence and the joy of exploring new cultures.', 
+        image: 'https://media.istockphoto.com/id/178757243/photo/ancient-indian-temple.jpg?s=612x612&w=0&k=20&c=J8JODhj86IndwpeizmfmMQSWQwRHYZ98wrWUIodxbIE=' },
+    { name: 'Burdwan', date: '2017-07-10', coords: [23.2326, 87.8616], note: 'Visiting my grandparents in Burdwan meant peaceful afternoons, mango orchards, and the warmth of family gatherings. The town’s charm lies in its simplicity and the love that fills every visit.', 
+        image: 'https://www.sinclairshotels.com/assets/images/burdwan/sightseeing/curzon.jpg' },
+    { name: 'Ghaziabad', date: '2018-08-15', coords: [28.6692, 77.4538], note: 'A city of new beginnings, Ghaziabad was where I learned to adapt and thrive. The bustling streets, local food, and weekend trips to Delhi made my time here unforgettable.', 
+        image: 'https://upload.wikimedia.org/wikipedia/commons/e/e1/Indirapuram.jpg' },
+    { name: 'Bangalore', coords: [12.9716, 77.5946], note: 'My current home! Bangalore is a city of innovation, greenery, and endless cafes. From morning walks in Cubbon Park to the vibrant tech scene, every day here feels like a new adventure.', 
+        image: 'https://images.unsplash.com/photo-1697130383976-38f28c444292?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YmFuZ2Fsb3JlJTIwaW5kaWF8ZW58MHx8MHx8fDA%3D' }
     ];
 
     const wishlist = [
@@ -191,18 +191,96 @@ document.addEventListener('DOMContentLoaded', () => {
             <img src="${place.image}" alt="${place.name}">
             <div class="card-content">
                 <h3>${place.name}</h3>
-                <p>${place.note}</p>
+                <p class="note-text">${place.note}</p>
                 ${place.itineraryUrl ? `<a href="${place.itineraryUrl}" target="_blank" class="itinerary-btn">View Itinerary</a>` : ''}
             </div>`;
-        
+
+        // Add Show more button if note is long
+        setTimeout(() => {
+            const content = card.querySelector('.card-content');
+            const note = content.querySelector('.note-text');
+            if (note.scrollHeight > 90) {
+                const btn = document.createElement('button');
+                btn.className = 'show-more-btn';
+                btn.textContent = 'Show more';
+                btn.onclick = (e) => {
+                    e.stopPropagation();
+                    const expanded = content.classList.toggle('expanded');
+                    btn.textContent = expanded ? 'Show less' : 'Show more';
+                };
+                content.appendChild(btn);
+            }
+        }, 0);
+
         card.addEventListener('click', (e) => {
-            // Only zoom if the click was not on the itinerary button
-            if (!e.target.classList.contains('itinerary-btn')) {
-                map.setView(place.coords, 10);
+            // Only open modal if not clicking itinerary or show-more button
+            if (!e.target.classList.contains('itinerary-btn') && !e.target.classList.contains('show-more-btn')) {
+                openMemoryModal(place);
             }
         });
         return card;
     }
+
+    // Modal logic for memory cards
+    function openMemoryModal(place) {
+        const modal = document.getElementById('memory-modal');
+        document.getElementById('memory-modal-img').src = place.image;
+        document.getElementById('memory-modal-title').textContent = place.name;
+        document.getElementById('memory-modal-note').textContent = place.note;
+        const itinerary = document.getElementById('memory-modal-itinerary');
+        if (place.itineraryUrl) {
+            itinerary.href = place.itineraryUrl;
+            itinerary.style.display = '';
+        } else {
+            itinerary.style.display = 'none';
+        }
+        modal.style.display = 'block';
+    }
+
+    // Attach modal close listeners after DOM is ready and modal is present
+    window.addEventListener('DOMContentLoaded', function() {
+        const modal = document.getElementById('memory-modal');
+        const closeBtn = document.querySelector('.close-memory-modal');
+        if (closeBtn) {
+            closeBtn.onclick = function() {
+                modal.style.display = 'none';
+            };
+        }
+        window.addEventListener('click', function(event) {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+    });
+
+    // Modal logic for memory cards
+    function openMemoryModal(place) {
+        const modal = document.getElementById('memory-modal');
+        document.getElementById('memory-modal-img').src = place.image;
+        document.getElementById('memory-modal-title').textContent = place.name;
+        document.getElementById('memory-modal-note').textContent = place.note;
+        const itinerary = document.getElementById('memory-modal-itinerary');
+        if (place.itineraryUrl) {
+            itinerary.href = place.itineraryUrl;
+            itinerary.style.display = '';
+        } else {
+            itinerary.style.display = 'none';
+        }
+        modal.style.display = 'block';
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const modal = document.getElementById('memory-modal');
+        const closeBtn = document.querySelector('.close-memory-modal');
+        closeBtn.onclick = function() {
+            modal.style.display = 'none';
+        };
+        window.addEventListener('click', function(event) {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+    });
 
     function createPersonCard(person) {
         const card = document.createElement('div');
@@ -215,14 +293,22 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function createPersonCard(person) {
+        // Determine the class for the card based on category
+        let typeClass = '';
+        if (person.category === 'girlfriend') typeClass = 'girlfriend';
+        else if (person.category === 'friend') typeClass = 'friend';
+        else if (person.category === 'parents' || person.category === 'family') typeClass = 'family';
+        else if (person.category === 'relation') typeClass = 'relation';
+
         const card = document.createElement('div');
-        card.className = 'card';
-        
+        card.className = `card people-card${typeClass ? ' ' + typeClass : ''}`;
+
         const categoryEmojis = {
             parents: '👨‍👩‍👧‍👦',
             girlfriend: '💕',
             friend: '🤗',
-            relation: '👥'
+            relation: '👥',
+            family: '👨‍👩‍👧‍👦'
         };
         const emoji = categoryEmojis[person.category] || '👤';
 
