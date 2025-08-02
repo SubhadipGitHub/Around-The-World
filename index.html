@@ -29,10 +29,11 @@
         <h1>Around The Globe</h1>
         <p>My Travel Memory Book</p>
     </header>
-    <div class="travel-quote">
-        <i class="fas fa-quote-left"></i>
-        All my friends are having one or two babies, and I’m like: “What destination am I going to next?"
-        <i class="fas fa-quote-right"></i>
+    <!-- Animated Travel Quote -->
+    <div class="travel-quote-animated">
+      <i class="fas fa-quote-left"></i>
+      <span id="animated-quote-text">All my friends are having one or two babies, and I’m like: “What destination am I going to next?"</span>
+      <i class="fas fa-quote-right"></i>
     </div>
     <hr id="decor-hr">
     <!-- Ground background below decor-hr -->
@@ -221,13 +222,77 @@ body { position: relative; }
     background-size: auto 180px; /* tile horizontally, control vertical size */
     z-index: -1;
     pointer-events: none;
-    margin-top: 20px;
+    margin-top: 10px;
     height: 0; /* will be set by JS */
 }
 #decor-hr {
     z-index: 3;
     position: relative;
     width: 100%;
+}
+/* Animated Travel Quote Styles */
+.travel-quote-animated {
+  text-align: center;
+  font-family: 'Pacifico', cursive;
+  font-size: 1.7rem;
+  color: #388e3c;
+  margin: 32px 0 0 0;
+  padding: 0 16px;
+  line-height: 1.4;
+  letter-spacing: 0.5px;
+  text-shadow: 0 2px 8px rgba(56,142,60,0.12);
+  position: relative;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+}
+.travel-quote-animated i {
+  color: #4a90e2;
+  font-size: 1.3em;
+  animation: quote-bounce 2.5s infinite alternate;
+}
+#animated-quote-text {
+  display: inline-block;
+  background: linear-gradient(90deg, #e0eafc 0%, #cfdef3 100%);
+  padding: 10px 24px;
+  border-radius: 32px;
+  box-shadow: 0 4px 24px rgba(74,144,226,0.08);
+  animation: travel-wave 5s infinite alternate;
+}
+@keyframes travel-wave {
+  0% { transform: scale(1) rotate(-1deg);}
+  50% { transform: scale(1.04) rotate(1deg);}
+  100% { transform: scale(1) rotate(-1deg);}
+}
+@keyframes quote-bounce {
+  0% { transform: translateY(0);}
+  100% { transform: translateY(-8px);}
+}
+
+/* Music Toggle Button */
+#music-toggle {
+  position: fixed;
+  bottom: 90px;
+  right: 30px;
+  z-index: 2000;
+  background: #4a90e2;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  font-size: 1.5rem;
+  box-shadow: 0 4px 16px rgba(74,144,226,0.18);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+#music-toggle.active {
+  background: #388e3c;
+}
+#music-toggle:hover {
+  background: #357abd;
 }
 </style>
 <script>
@@ -240,17 +305,46 @@ document.addEventListener('DOMContentLoaded', function() {
     var rect = hr.getBoundingClientRect();
     var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
     // Move the walker up so it appears above the grass
-    walkAnim.style.top = (rect.top + scrollTop - 45) + 'px';
+    walkAnim.style.top = (rect.top + scrollTop - 65) + 'px';
   }
   if (hr && groundBg) {
     var rect = hr.getBoundingClientRect();
     var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
     var top = rect.bottom + scrollTop;
-    groundBg.style.top = top + 'px';
-    groundBg.style.height = (window.innerHeight + scrollTop - top + 20) + 'px';
+    groundBg.style.top = (top - 10) + 'px';
+    groundBg.style.height = (window.innerHeight + scrollTop - top) + 'px';
   }
 });
 </script>
 </style>
+</script>
+
+<!-- Travel Music -->
+<audio id="travel-music" loop>
+  <source src="music/travel_music.mp3" type="audio/mp3">
+  Your browser does not support the audio element.
+</audio>
+<button id="music-toggle" title="Toggle music">
+  <i class="fas fa-music"></i>
+</button>
+<script>
+// Music toggle
+document.addEventListener('DOMContentLoaded', function() {
+  const music = document.getElementById('travel-music');
+  const btn = document.getElementById('music-toggle');
+  let playing = false;
+  btn.addEventListener('click', function() {
+    if (!playing) {
+      music.play();
+      btn.classList.add('active');
+      playing = true;
+    } else {
+      music.pause();
+      btn.classList.remove('active');
+      playing = false;
+    }
+  });
+});
+</script>
 </body>
 </html>
