@@ -61,15 +61,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }).addTo(map);
 
     const memories = [
-        { name: 'Kolkata', coords: [22.5726, 88.3639], note: 'My grand parents place.', 
-            image: 'https://www.shutterstock.com/image-photo/howrah-bridge-wooden-boats-on-260nw-2486557591.jpg' },
-        { name: 'Asansol', coords: [23.6889, 86.9659], note: 'Schooling.', 
-            image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/IMG_asnrlyjn.jpg/1200px-IMG_asnrlyjn.jpg' },
-        { name: 'Bhubaneswar', coords: [20.2961, 85.8245], note: 'College.', 
+        { name: 'Kolkata', date: '2015-05-20', coords: [22.5726, 88.3639], note: 'My grand parents place.', 
+            image: 'https://www.shutterstock.com/image-photo/howrah-bridge-wooden-boats-on-260nw-2486557591.jpg' 
+            , itineraryUrl: 'https://www.google.com/maps/d/u/0/viewer?mid=1Z5b4k2f8g3j7c9e5z5e5e5e5e5e5e5e&ll=22.5726,88.3639&z=10' },
+        { name: 'Asansol', date: '2016-06-15', coords: [23.6889, 86.9659], note: 'Schooling.', 
+            image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/IMG_asnrlyjn.jpg/1200px-IMG_asnrlyjn.jpg' 
+        , itineraryUrl: 'https://www.google.com/maps/d/u/0/viewer?mid=1Z5b4k2f8g3j7c9e5z5e5e5e5e5e5e5e&ll=23.6889,86.9659&z=10' 
+},
+        { name: 'Bhubaneswar', date: '2015-05-25', coords: [20.2961, 85.8245], note: 'College.', 
             image: 'https://media.istockphoto.com/id/178757243/photo/ancient-indian-temple.jpg?s=612x612&w=0&k=20&c=J8JODhj86IndwpeizmfmMQSWQwRHYZ98wrWUIodxbIE=' },
-        { name: 'Burdwan', coords: [23.2326, 87.8616], note: 'Grandparent.', 
+        { name: 'Burdwan', date: '2017-07-10', coords: [23.2326, 87.8616], note: 'Grandparent.', 
             image: 'https://www.sinclairshotels.com/assets/images/burdwan/sightseeing/curzon.jpg' },
-        { name: 'Ghaziabad', coords: [28.6692, 77.4538], note: 'Lived there for some time.', 
+        { name: 'Ghaziabad', date: '2018-08-15', coords: [28.6692, 77.4538], note: 'Lived there for some time.', 
             image: 'https://upload.wikimedia.org/wikipedia/commons/e/e1/Indirapuram.jpg' },
         { name: 'Bangalore', coords: [12.9716, 77.5946], note: 'Currently staying here.', 
             image: 'https://images.unsplash.com/photo-1697130383976-38f28c444292?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YmFuZ2Fsb3JlJTIwaW5kaWF8ZW58MHx8MHx8fDA%3D' }
@@ -117,7 +120,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     memories.forEach(place => {
         const marker = L.marker(place.coords);
-        marker.bindPopup(`<b>${place.name}</b><br>${place.note}`);
+        let popupContent = `<b>${place.name}</b><br>${place.note}`;
+        if (place.itineraryUrl) {
+            popupContent += `<br><a href="${place.itineraryUrl}" target="_blank" style="color: #4a90e2; text-decoration: none;">View Itinerary</a>`;
+        }
+        marker.bindPopup(popupContent);
         markers.addLayer(marker);
         const card = createCard(place);
         memoriesContainer.appendChild(card);
@@ -180,9 +187,19 @@ document.addEventListener('DOMContentLoaded', () => {
     function createCard(place) {
         const card = document.createElement('div');
         card.className = 'card';
-        card.innerHTML = `<img src="${place.image}" alt="${place.name}"><h3>${place.name}</h3><p>${place.note}</p>`;
-        card.addEventListener('click', () => {
-            map.setView(place.coords, 10);
+        card.innerHTML = `
+            <img src="${place.image}" alt="${place.name}">
+            <div class="card-content">
+                <h3>${place.name}</h3>
+                <p>${place.note}</p>
+                ${place.itineraryUrl ? `<a href="${place.itineraryUrl}" target="_blank" class="itinerary-btn">View Itinerary</a>` : ''}
+            </div>`;
+        
+        card.addEventListener('click', (e) => {
+            // Only zoom if the click was not on the itinerary button
+            if (!e.target.classList.contains('itinerary-btn')) {
+                map.setView(place.coords, 10);
+            }
         });
         return card;
     }
@@ -270,6 +287,109 @@ document.addEventListener('DOMContentLoaded', () => {
     setupSearch('memories-search', 'memories-container');
     setupSearch('wishlist-search', 'wishlist-container');
     setupSearch('people-search', 'people-container');
+
+    // Global state for animation
+    let isAnimating = false;
+    let animationTimeoutId = null;
+
+    // Tab Switching Logic
+    const mapTab = document.getElementById('map-tab');
+    const timelineTab = document.getElementById('timeline-tab');
+    const mapView = document.getElementById('map-view-container');
+    const timelineView = document.getElementById('timeline-view-container');
+    const mapDiv = document.getElementById('map');
+    const timelineContent = document.getElementById('timeline-content');
+
+    mapTab.addEventListener('click', () => {
+        if (isAnimating) playAnimationBtn.click(); // Stop animation if running
+        mapView.style.display = 'block';
+        timelineView.style.display = 'none';
+        mapTab.classList.add('active');
+        timelineTab.classList.remove('active');
+        mapView.prepend(mapDiv); // Move map back to its original container
+        map.invalidateSize();
+    });
+
+    timelineTab.addEventListener('click', () => {
+        timelineView.style.display = 'flex';
+        mapView.style.display = 'none';
+        timelineTab.classList.add('active');
+        mapTab.classList.remove('active');
+        timelineContent.prepend(mapDiv); // Move map to the timeline view
+        map.invalidateSize();
+    });
+
+    // Populate Timeline
+    function populateTimeline() {
+        const timelineList = document.getElementById('timeline-list');
+        const sortedMemories = [...memories].filter(m => m.date).sort((a, b) => new Date(a.date) - new Date(b.date));
+
+        sortedMemories.forEach((memory, index) => {
+            const item = document.createElement('div');
+            item.className = 'timeline-item';
+            item.dataset.index = index; // Add index for easy lookup
+            item.innerHTML = `
+                <span class="date">${new Date(memory.date).toDateString()}</span>
+                <h3>${memory.name}</h3>
+                <p>${memory.note}</p>
+            `;
+            timelineList.appendChild(item);
+        });
+    }
+    populateTimeline();
+
+    // Timeline Animation Logic
+    const playAnimationBtn = document.getElementById('play-timeline-animation');
+    const timelineItems = document.querySelectorAll('.timeline-item');
+
+    playAnimationBtn.addEventListener('click', () => {
+        if (isAnimating) {
+            // --- Stop the animation ---
+            isAnimating = false;
+            clearTimeout(animationTimeoutId);
+            playAnimationBtn.textContent = '▶️ Replay';
+            playAnimationBtn.classList.remove('stop');
+            timelineItems.forEach(item => item.classList.remove('highlighted'));
+            map.stop(); // Stop any current map flight
+            map.setView([20, 0], 2);
+            return;
+        }
+
+        // --- Start the animation ---
+        isAnimating = true;
+        playAnimationBtn.textContent = '⏹️ Stop';
+        playAnimationBtn.classList.add('stop');
+        const sortedMemories = [...memories].filter(m => m.date).sort((a, b) => new Date(a.date) - new Date(b.date));
+        let i = 0;
+
+        function animateNext() {
+            if (i >= sortedMemories.length || !isAnimating) {
+                playAnimationBtn.click(); // End animation
+                return;
+            }
+
+            // Highlight current item
+            timelineItems.forEach(item => item.classList.remove('highlighted'));
+            const currentItem = document.querySelector(`.timeline-item[data-index='${i}']`);
+            if (currentItem) {
+                currentItem.classList.add('highlighted');
+                currentItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+
+            const memory = sortedMemories[i];
+            map.flyTo(memory.coords, 10, { duration: 2 });
+
+            setTimeout(() => {
+                if (!isAnimating) return;
+                const targetMarker = markers.getLayers().find(m => m.getLatLng().equals(L.latLng(memory.coords)));
+                if (targetMarker) targetMarker.openPopup();
+            }, 2000);
+
+            i++;
+            animationTimeoutId = setTimeout(animateNext, 4000);
+        }
+        animateNext();
+    });
 
     // Help Modal Logic
     const helpModal = document.getElementById('help-modal');

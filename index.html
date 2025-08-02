@@ -25,30 +25,51 @@
         <p>My Travel Memory Book</p>
     </header>
 
-    <div id="map"></div>
+    <!-- Navigation Tabs -->
+    <div class="nav-tabs">
+        <button id="map-tab" class="nav-tab active">Map View</button>
+        <button id="timeline-tab" class="nav-tab">Activity Timeline</button>
+    </div>
 
-    <div class="container">
-        <section id="memories">
-            <h2 class="section-title">My Travel Memories <i class="fas fa-chevron-down"></i></h2>
-            <div class="search-container">
-                <input type="text" id="memories-search" placeholder="Search memories by name...">
-            </div>
-            <div class="card-container" id="memories-container"></div>
-        </section>
-        <section id="wishlist">
-            <h2 class="section-title">My Travel Wishlist <i class="fas fa-chevron-down"></i></h2>
-            <div class="search-container">
-                <input type="text" id="wishlist-search" placeholder="Search wishlist by name...">
-            </div>
-            <div class="card-container" id="wishlist-container"></div>
-        </section>
-        <section id="people">
-            <h2 class="section-title">Friends & Relations <i class="fas fa-chevron-down"></i></h2>
-            <div class="search-container">
-                <input type="text" id="people-search" placeholder="Search people by name...">
-            </div>
-            <div class="card-container" id="people-container"></div>
-        </section>
+    <!-- Main Content Area -->
+    <div id="map-view-container">
+
+        <div id="map"></div>
+
+        <div class="container">
+            <section id="memories">
+                <h2 class="section-title">My Travel Memories <i class="fas fa-chevron-down"></i></h2>
+                <div class="search-container">
+                    <input type="text" id="memories-search" placeholder="Search memories by name...">
+                </div>
+                <div class="card-container" id="memories-container"></div>
+            </section>
+            <section id="wishlist">
+                <h2 class="section-title">My Travel Wishlist <i class="fas fa-chevron-down"></i></h2>
+                <div class="search-container">
+                    <input type="text" id="wishlist-search" placeholder="Search wishlist by name...">
+                </div>
+                <div class="card-container" id="wishlist-container"></div>
+            </section>
+            <section id="people">
+                <h2 class="section-title">Friends & Relations <i class="fas fa-chevron-down"></i></h2>
+                <div class="search-container">
+                    <input type="text" id="people-search" placeholder="Search people by name...">
+                </div>
+                <div class="card-container" id="people-container"></div>
+            </section>
+        </div>
+    </div>
+
+    <div id="timeline-view-container" style="display: none;">
+        <div class="timeline-header">
+            <h2>My Travel Timeline</h2>
+            <button id="play-timeline-animation">▶️ Replay</button>
+        </div>
+        <div id="timeline-content">
+            <!-- The map will be moved here by the script -->
+            <div id="timeline-list"></div>
+        </div>
     </div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
