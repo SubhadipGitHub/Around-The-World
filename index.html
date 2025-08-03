@@ -32,7 +32,7 @@
     <!-- Animated Travel Quote -->
     <div class="travel-quote-animated">
       <i class="fas fa-quote-left"></i>
-      <span id="animated-quote-text">All my friends are having one or two babies, and I’m like: “What destination am I going to next?"</span>
+      <span id="animated-quote-text"></span>
       <i class="fas fa-quote-right"></i>
     </div>
     <hr id="decor-hr">
@@ -158,6 +158,11 @@
         </div>
     </div>
 <style>
+
+html, body {
+    overflow-x: hidden;
+}
+
 .travel-quote {
     text-align: center;
     font-family: 'Pacifico', cursive;
@@ -202,6 +207,9 @@
     z-index: 1002;
     pointer-events: none;
     animation: walk-move 28s linear infinite;
+    /* Prevent container from affecting page width */
+    max-width: 100vw;
+    animation-play-state: paused;
 }
 #walk-anim-gif {
     width: 100%;
@@ -209,7 +217,7 @@
     display: block;
 }
 @keyframes walk-move {
-    0% { left: -120px; }
+    0% { left: -240px; }
     100% { left: 100vw; }
 }
 
@@ -386,68 +394,6 @@ body { position: relative; }
   }
 }
 </style>
-<script>
-// Dynamically set the top of #walk-anim-container and #ground-bg to match the <hr>
-
-function positionDecorHrAndGroundBg() {
-  var hr = document.getElementById('decor-hr');
-  var walkAnim = document.getElementById('walk-anim-container');
-  var groundBg = document.getElementById('ground-bg');
-  // Responsive walking animation speed
-  if (walkAnim) {
-    if (window.innerWidth <= 600) {
-      walkAnim.style.animationDuration = '10s'; // fast on small screens
-    } else if (window.innerWidth <= 900) {
-      walkAnim.style.animationDuration = '18s'; // medium on tablets
-    } else {
-      walkAnim.style.animationDuration = '28s'; // slow on desktop
-    }
-  }
-  if (hr && walkAnim) {
-    var rect = hr.getBoundingClientRect();
-    var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    // Move the walker up so it appears above the grass
-    walkAnim.style.top = (rect.top + scrollTop - 65) + 'px';
-  }
-  if (hr && groundBg) {
-    var rect = hr.getBoundingClientRect();
-    var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    var top = rect.bottom + scrollTop;
-    groundBg.style.top = top + 'px';
-
-    // Find the bottom of the main content (map-view-container and timeline-view-container)
-    var mapView = document.getElementById('map-view-container');
-    var timelineView = document.getElementById('timeline-view-container');
-    var mapBottom = 0, timelineBottom = 0;
-    if (mapView && mapView.offsetParent !== null) {
-      var mapRect = mapView.getBoundingClientRect();
-      mapBottom = mapRect.bottom + scrollTop;
-    }
-    if (timelineView && timelineView.offsetParent !== null) {
-      var timelineRect = timelineView.getBoundingClientRect();
-      timelineBottom = timelineRect.bottom + scrollTop;
-    }
-    var contentBottom = Math.max(mapBottom, timelineBottom);
-    // Fallback to document height if contentBottom is not found
-    if (!contentBottom || contentBottom < top) {
-      contentBottom = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight, window.innerHeight);
-    }
-    groundBg.style.height = (contentBottom - top) + 'px';
-  }
-}
-
-window.addEventListener('DOMContentLoaded', positionDecorHrAndGroundBg);
-window.addEventListener('resize', positionDecorHrAndGroundBg);
-window.addEventListener('scroll', positionDecorHrAndGroundBg);
-
-// Fix walk-anim alignment on animation iteration
-document.addEventListener('DOMContentLoaded', function() {
-  var walkAnim = document.getElementById('walk-anim-container');
-  if (walkAnim) {
-    walkAnim.addEventListener('animationiteration', positionDecorHrAndGroundBg);
-  }
-});
-</script>
 </style>
 </script>
 
@@ -477,33 +423,8 @@ document.addEventListener('DOMContentLoaded', function() {
       playing = false;
     }
   });
-
-  // Animated travel quotes
-  const travelQuotes = [
-    "All my friends are having one or two babies, and I’m like: “What destination am I going to next?”",
-    "Travel is the only thing you buy that makes you richer.",
-    "To travel is to live.",
-    "Jobs fill your pocket, adventures fill your soul.",
-    "The world is a book and those who do not travel read only one page.",
-    "Not all those who wander are lost.",
-    "Take only memories, leave only footprints.",
-    "Life is short and the world is wide.",
-    "Wander often, wonder always.",
-    "Adventure may hurt you, but monotony will kill you."
-  ];
-  const quoteText = document.getElementById('animated-quote-text');
-  let lastIndex = -1;
-  function showRandomQuote() {
-    let idx;
-    do {
-      idx = Math.floor(Math.random() * travelQuotes.length);
-    } while (idx === lastIndex && travelQuotes.length > 1);
-    lastIndex = idx;
-    quoteText.textContent = travelQuotes[idx];
-  }
-  setInterval(showRandomQuote, 20000);
-  showRandomQuote();
 });
+  
 </script>
 <footer id="site-footer">
   <span>&copy; 2025 Around The Globe. All rights reserved.</span>
